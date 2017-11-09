@@ -75,7 +75,7 @@ else {
     <script src='../js/dialog.js'></script>
     <script src="../js/jquery.js"></script>
     <script src="../js/scan.js"></script>
-    <link rel='stylesheet' href='../weui/dist/style/weui.css'/>
+    <link rel='stylesheet' href='../weui/weui.css'/>
     <style>
         body {
             height: 100%;

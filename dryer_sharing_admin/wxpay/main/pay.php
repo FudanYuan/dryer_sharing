@@ -66,7 +66,7 @@ if ($status != 0 || $fee_len == null) {
     <script src="../js/jquery.js"></script>
     <script src='../js/dialog.js'></script>
     <script src='../js/getJsApiParameters.js'></script>
-    <link rel="stylesheet" href="../weui/dist/style/weui.css"/>
+    <link rel='stylesheet' href='../weui/weui.css'/>
     <title>讯鑫干衣科技</title>
     <style>
         .payForm {
