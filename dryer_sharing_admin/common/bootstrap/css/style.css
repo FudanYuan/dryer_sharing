@@ -1,0 +1,148 @@
+body {
+    position: relative;
+    width: 99%;
+    font-family: '微软雅黑';
+    vertical-align: middle;
+    z-index: -1;
+}
+
+ul, li {
+    list-style-type: none;
+    vertical-align: middle;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    vertical-align: middle;
+}
+
+.logo {
+    position: relative;
+    top: 1%;
+    left: 1%;
+    width: 97%;
+}
+
+hr {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 99.5%;
+    border: 2px solid #1aad19;
+}
+
+.content{
+    position: relative;
+    top: 5px;
+    left: 1%;
+    width: 97%;
+    height: 540px;
+    vertical-align: middle;
+    z-index: -1;
+}
+
+/* id为menu的菜单 */
+#menu {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 10%; /*设置宽度  */
+    height: 100%; /*设置高度  */
+    border: 0; /* 设置边框 */
+    background-color: #f1f1f1; /*背景颜色*/
+}
+
+#menu ul {
+    margin: 0; /*ul的外边距  */
+    padding: 0; /*ul的内边距  */
+    width: 100%; /* 块元素的宽度 */
+}
+
+#menu ul li {
+    list-style-type: none;
+    background-color: #eee;
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    position: relative;
+}
+
+#menu a {
+    font-size: 1em;
+    width: 100%;
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+}
+
+#menu a:hover {
+    background-color: #1aad19;
+    color: white;
+    font-size: 1em;
+}
+
+#menu ul li ul {
+    position: relative;
+    left: 0; /* 向右移动0px */
+    top: 0; /* 向下移动0px */
+    display: none; /*默认不显示  */
+    width: 100%; /*宽度  */
+    background-color: #f1f1f1;
+    border-top: 1px;
+    z-index: 10;
+}
+
+#menu ul li:hover ul {
+    display: none; /*以块元素显示  */
+}
+
+.subMenus{
+    font-size: 0.9em;
+    border-top: 1px;
+}
+
+iframe {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 90%;
+    height: 100%;
+    border: 0;
+}
+
+.subActive{
+    background-color: #00AA88;
+    color: white;
+}
+
+.active{
+    background-color: #1aad19;
+    color: white;
+}
+
+.notActive{
+    background-color: #f1f1f1;
+    color: black;
+}
+
+#welcome{
+    position: absolute;
+    top: 40px;
+    right: 100px;
+    font-size: 90%;
+    float:right;
+    padding: 0 20px;
+    color: #8a6d3b;
+}
+
+#logout{
+    position: absolute;
+    top: 30px;
+    right: 0;
+    font-size: 100%;
+    float:right;
+    padding: 5px;
+    color: white;
+    background-color: #00AA88;
+    border-radius: 5px;
+}

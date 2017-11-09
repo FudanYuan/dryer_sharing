@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<!--[if lte IE 9 ]>
+<html class="ie"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html> <!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src='js/dialog.js'></script>
+    <link rel="stylesheet" type="text/css" href="simple_link.css">
+    <link rel="stylesheet" type="text/css" href="weui.css">
+    <title>设备测试</title>
+    <style>
+        .deviceSwitch {
+            background: url("images/switch.jpg") no-repeat scroll 0 -72px rgba(0, 0, 0, 0);
+            height: 70px;
+            width: 30px;
+        }
+
+        .deviceOn {
+            margin-top: -10px;
+        }
+
+        .deviceOff {
+            margin-top: 0;
+        }
+
+        .deviceOn, .deviceOff {
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        table{
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+        var HTTPrequest = new XMLHttpRequest();
+
+        function VerifyResult() {
+            var status = "__SL_G_VFR";
+            var $loadingToast = $('#loadingToast');
+            $loadingToast.fadeIn(100);
+            t = setTimeout(function () {
+                $loadingToast.fadeOut(100);
+            }, 2000);
+            if (status.indexOf("VFR_YES") > -1) {
+                // 密码正确，跳转至home.html
+                window.clearTimeout(t);
+                $('table').show();
+                $loadingToast.fadeOut(0);
+                var $toast = $('#toast');
+                if ($toast.css('display') != 'none') return;
+                $toast.fadeIn(100);
+                setTimeout(function () {
+                    $toast.fadeOut(100);
+                }, 500);
+                var mac = status.substring(status.indexOf(",") + 1);
+                document.getElementById("mac").innerText = mac;
+            }
+            else if(status.indexOf("VFR_NO") > -1){
+                // 警告密码不正确，跳回main.html
+                window.clearTimeout(t);
+                $loadingToast.fadeOut(0);
+                dialog('验证失败', '用户名不存在或密码错误', '确认', '', function () {
+                    var url = 'login.html';
+                    window.location.href = url;
+                });
+            }
+            else{
+                dialog('验证失败', '网络异常', '确认', '', function () {
+                    var url = 'login.html';
+                    window.location.href = url;
+                });
+            }
+        }
+
+        function ToggleDEV(DEVnum, status) {
+            var params = "__SL_P_DEV=DEV" + DEVnum;
+            if (status == "on"){
+                params = params + "_ON";
+            }
+            else{
+                params = params + "_OFF";
+            }
+
+            HTTPrequest.open("POST", "No_content", true);
+            HTTPrequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            HTTPrequest.setRequestHeader("Content-length", params.length);
+            HTTPrequest.setRequestHeader("Connection", "close");
+            HTTPrequest.onreadystatechange = function () {
+                if (HTTPrequest.readyState == 4 && HTTPrequest.status == 200) {
+                }
+            };
+            HTTPrequest.send(params);
+        }
+
+        function toggleSwitch(led, status) {
+            var toggle = "deviceSwitch" + led;
+            if (status == "on") {
+                document.getElementById(toggle).style.backgroundPosition = '0 0';
+            } else {
+                document.getElementById(toggle).style.backgroundPosition = '0 -72px';
+            }
+            ToggleDEV(led, status);
+        }
+    </script>
+</head>
+
+<body class="in-frame" onload="VerifyResult()">
+
+<table border="0" width="100%" cellpadding="3" cellspacing="0">
+    <tr>
+        <td class="page-title" colspan=2>
+            MAC地址
+        </td>
+    </tr>
+
+    <tr>
+        <td align=center class="in-a-box" colspan=2><br>
+            <p id="mac" style="font-size: large">未成功获取设备MAC地址</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="empty-l-in-box" colspan=2></td>
+    </tr>
+</table>
+
+<table border="0" width="100%" cellpadding="3" cellspacing="0">
+    <tr>
+        <td class="page-title" colspan=2>
+            热机调试
+        </td>
+    </tr>
+
+    <tr>
+        <td align=center class="in-a-box" colspan=2><br>
+            <div class="deviceOn" onclick="toggleSwitch(1, 'on');">ON
+            </div>
+            <div class="deviceSwitch" id="deviceSwitch1">
+            </div>
+            <div class="deviceOff" onclick="toggleSwitch(1, 'off');">OFF
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="in-a-box" colspan=2 align=center>
+            <span style="font-size: 40%;">ON->热机开；OFF->热机关</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="border-l-top" colspan=2>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="100%" cellpadding="3" cellspacing="0">
+    <tr>
+        <td class="page-title" colspan=2>
+            风机调试
+        </td>
+    </tr>
+
+    <tr>
+        <td align=center class="in-a-box" colspan=2><br>
+            <div class="deviceOn" onclick="toggleSwitch(2, 'on');">ON
+            </div>
+            <div class="deviceSwitch" id="deviceSwitch2">
+            </div>
+            <div class="deviceOff" onclick="toggleSwitch(2, 'off');">OFF
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="in-a-box" colspan=2 align=center>
+            <span style="font-size: 40%;">ON->风机开；OFF->风机关</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="border-l-top" colspan=2>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="100%" cellpadding="4" cellspacing="0">
+    <tr>
+        <td class="page-title" colspan=2>
+            蜂鸣器调试
+        </td>
+    </tr>
+
+    <tr>
+        <td align=center class="in-a-box" colspan=2><br>
+            <div class="deviceOn" onclick="toggleSwitch(3, 'on');">ON
+            </div>
+            <div class="deviceSwitch" id="deviceSwitch3">
+            </div>
+            <div class="deviceOff" onclick="toggleSwitch(3, 'off');">OFF
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="in-a-box" colspan=2 align=center>
+            <span style="font-size: 40%;">ON->蜂鸣器开；OFF->蜂鸣器关</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="border-l-top" colspan=2>
+        </td>
+    </tr>
+</table>
+
+<!--数据加载-->
+<div id="loadingToast" style="display:none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-loading weui-icon_toast"></i>
+        <p class="weui-toast__content">验证中</p>
+    </div>
+</div>
+
+<!--弹窗-->
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">登录成功</p>
+    </div>
+</div>
+
+</body>
+</html>

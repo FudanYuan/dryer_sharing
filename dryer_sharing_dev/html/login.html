@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<!--[if lte IE 9 ]>
+<html class="ie"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html> <!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <link rel="stylesheet" href="weui.css"/>
+    <title>讯鑫干衣机后台</title>
+    <style>
+        #form {
+            position: relative;
+            top: 180px;
+            left: 25%;
+            width: 50%;
+            align-content: center;
+            vertical-align: middle;
+            height: auto;
+        }
+
+        #form p {
+            align-content: center;
+            text-align: center;
+            font-size: large;
+            width: 100%;
+            height: auto;
+            margin: 2% 0;
+        }
+
+        #form input {
+            width: 100%;
+            height: 35px;
+            margin-bottom: 1.5%;
+        }
+
+        .submit {
+            position: relative;
+            top: 0;
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="form">
+    <p>讯鑫干衣机后台管理</p>
+    <label>
+        <input type="text" name="id" id="id" placeholder="账号"/>
+        <br/>
+        <input type="password" name="pwd" id="pwd" placeholder="密码"/>
+        <br/>
+    </label>
+
+    <div class="submit">
+        <button class="weui-btn weui-btn_primary" id="submit" onclick="verify()">登录</button>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+
+    // 检查填写数据
+    function check() {
+        var id = document.getElementById("id");
+        var pwd = document.getElementById("pwd");
+
+        //alert(id.value + ' ' + pwd.value);
+        if (trim(id.value) == null || trim(id.value) == "") {
+            alert("请输入账号！");
+            return false;
+        }
+
+        if (trim(pwd.value) == null || trim(pwd.value) == "") {
+            alert("请输入密码！");
+            return false;
+        }
+        return true;
+    }
+
+    // 去除空格
+    function trim(str) { //删除左右两端的空格
+        return str.replace(/(^\s*)|(\s*$)/g, "");
+    }
+
+    // 异步验证用户名和密码
+    var xmlHttp;
+    function verify() {
+        if (check()) {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            var data;
+            data ="__SL_P_UID=";
+            data += document.getElementById("id").value;
+            data +="&";
+            data +="__SL_P_PWD=";
+            data += document.getElementById("pwd").value;
+
+            xmlhttp.open("POST", "No_content", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.setRequestHeader("Content-length", data.length);
+            xmlhttp.setRequestHeader("Connection", "close");
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                }
+            };
+            xmlhttp.send(data);
+
+            var url = 'device.html';
+            window.location.href = url;
+        }
+    }
+</script>

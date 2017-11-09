@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script src="common/bootstrap/js/jquery.js"></script>
+    <script src='common/bootstrap/js/cookie.js'></script>
+    <script src='common/bootstrap/js/dialog.js'></script>
+    <link rel="stylesheet" href="common/bootstrap/css/weui.css"/>
+    <link rel="shortcut icon" href="logo/logo.ico" />
+    <link rel="bookmark" href="logo/logo.ico" />
+    <title>讯鑫科技后台管理系统</title>
+    <style>
+        #form {
+            position: relative;
+            top: 180px;
+            left: 25%;
+            width: 50%;
+            align-content: center;
+            vertical-align: middle;
+            height: auto;
+        }
+
+        #form p {
+            align-content: center;
+            text-align: center;
+            font-size: large;
+            width: 100%;
+            height: auto;
+            margin: 2% 0;
+        }
+
+        #form input {
+            width: 100%;
+            height: 35px;
+            margin-bottom: 1.5%;
+        }
+
+        .remember{
+            position: relative;
+            top: -5px;
+            width: auto;
+            font-size: 0.8em;
+            vertical-align: middle;
+        }
+
+        .remember span{
+            position: relative;
+            float: right;
+            width: auto;
+            padding-top: 8px;
+            align-content: center;
+            vertical-align: middle;
+        }
+
+        .submit {
+            position: relative;
+            top: 0;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .func_part{
+            position: relative;
+            top: 15px;
+            font-size: 0.9em;
+            width: 100%;
+            margin-bottom: 1.5%;
+        }
+
+        .func_part a:hover{
+            color: red;
+        }
+
+        .register{
+            margin-left: 5%;
+            float: left;
+            color: #6D6D6D;
+        }
+
+        .forget_pwd{
+            margin-right: 5%;
+            float: right;
+            color: #6D6D6D;
+        }
+    </style>
+</head>
+<body>
+<div id="form">
+    <p>讯鑫科技后台管理</p>
+    <label>
+        <input type="text" name="id" id="id" placeholder="商户账号"/>
+        <br/>
+        <input type="password" name="pwd" id="pwd" placeholder="商户密码"/>
+        <br/>
+    </label>
+
+    <div class="remember">
+        <label>
+            <span class="saveCookie">&nbsp;&nbsp;记住密码</span>
+            <input style="position:absolute; right: 60px; width: auto; z-index: 5;" type="checkbox" name="saveCookie" id="saveCookie">
+        </label>
+    </div>
+
+    <div class="submit">
+        <button class="weui-btn weui-btn_primary" id="submit" onclick="verify()">登录</button>
+    </div>
+
+    <div class="func_part">
+        <a href="/admin/register.html" class="register">商户注册>></a>
+        <a href="/admin/forget_pwd.html" class="forget_pwd">忘记密码?</a>
+    </div>
+</div>
+
+<!--数据加载-->
+<div id="loadingToast" style="display:none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-loading weui-icon_toast"></i>
+        <p class="weui-toast__content">用户验证中</p>
+    </div>
+</div>
+
+<!--弹窗-->
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">登录成功</p>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+    window.onload = function () {
+        // 分析cookie值，显示上次的登陆信息
+        $("#id").val(getCookieValue("id"));
+        $("#pwd").val(getCookieValue("pwd"));
+        if(getCookieValue("id") != "" && getCookieValue("pwd") != ""){
+            $("input:checkbox").attr('checked','true');
+        }
+    };
+
+    // 检查填写数据
+    function check() {
+        var id = document.getElementById("id");
+        var pwd = document.getElementById("pwd");
+
+        //alert(id.value + ' ' + pwd.value);
+        if (trim(id.value) == null || trim(id.value) == "") {
+            dialog('警告', '请输入用户名', '确认', '', function () {
+                id.focus();
+            });
+            return false;
+        }
+
+        if (trim(pwd.value) == null || trim(pwd.value) == "") {
+            dialog('警告', '请输入密码', '确认', '', function () {
+                pwd.focus();
+            });
+            return false;
+        }
+        return true;
+    }
+
+    // 去除空格
+    function trim(str) { //删除左右两端的空格
+        return str.replace(/(^\s*)|(\s*$)/g, "");
+    }
+
+    // 异步验证用户名和密码
+    var xmlHttp;
+    function verify() {
+        if (check()) {
+            var id = document.getElementById("id");
+            var pwd = document.getElementById("pwd");
+            //alert(pwd.value);
+            xmlHttp = GetXmlHttpObject();
+            if (xmlHttp == null) {
+                alert("Browser does not support HTTP Request");
+                return;
+            }
+            var url = "/admin/verify.php";
+            var data = "id=" + id.value + "&pwd=" + pwd.value;
+            xmlHttp.onreadystatechange = getLoginResult;
+            xmlHttp.open("POST", url, true);
+            xmlHttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xmlHttp.send(data);
+            // loading
+            var $loadingToast = $('#loadingToast');
+            $loadingToast.fadeIn(100);
+            t = setTimeout(function () {
+                $loadingToast.fadeOut(100);
+            }, 2000);
+        }
+    }
+
+    // 获取服务器返回
+    function getLoginResult() {
+        if (xmlHttp.readyState == 4 || xmlHttp.readyState == "OK") {
+            // 结束加载
+            var $loadingToast = $('#loadingToast');
+            clearTimeout(t);
+            $loadingToast.fadeOut();
+
+            var result = xmlHttp.responseText;
+
+            if (result == 'SYS_SUCCESS') {
+                if ($('#saveCookie').is(':checked')) {
+                    setCookie("id", $("#id").val(), 24, "/");
+                    setCookie("pwd", $("#pwd").val(), 24, "/");
+                }
+                var $toast = $('#toast');
+                if ($toast.css('display') != 'none') return;
+                $toast.fadeIn(100);
+                setTimeout(function () {
+                    $toast.fadeOut(100);
+                    var url = 'admin/admin_sys/system.php';
+                    window.location.href = url;
+                }, 1000);
+            }
+            else if(result == 'MER_SUCCESS'){
+                if ($('#saveCookie').is(':checked')) {
+                    setCookie("id", $("#id").val(), 24, "/");
+                    setCookie("pwd", $("#pwd").val(), 24, "/");
+                }
+                var $toast = $('#toast');
+                if ($toast.css('display') != 'none') return;
+                $toast.fadeIn(100);
+                setTimeout(function () {
+                    $toast.fadeOut(100);
+                    var url = 'admin/admin_mer/merchant.php';
+                    window.location.href = url;
+                }, 1000);
+            }
+            else {
+                dialog('验证失败', '用户名不存在或密码错误', '确认', '', function () {
+                    $('#id').val('');
+                    $('#pwd').val('');
+                    id.focus();
+                });
+            }
+        }
+    }
+
+    // 得到服务器返回值json格式
+    function GetXmlHttpObject() {
+        var xmlHttp = null;
+        try {
+            // Firefox, Opera 8.0+, Safari
+            xmlHttp = new XMLHttpRequest();
+        }
+        catch (e) {
+            //Internet Explorer
+            try {
+                xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+            }
+            catch (e) {
+                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+        }
+        return xmlHttp;
+    }
+
+</script>

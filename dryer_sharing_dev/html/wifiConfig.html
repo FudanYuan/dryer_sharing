@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--[if lte IE 9 ]>
+<html class="ie"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html> <!--<![endif]-->
+<meta charset="UTF-8">
+<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <title>WifiConfig</title>
+    <link rel="stylesheet" type="text/css" href="simple_link.css">
+    <link rel="stylesheet" type="text/css" href="weui.css">
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/dialog.js"></script>
+    <style>
+        #saveConfig {
+            font-size: 40%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .submit {
+            position: relative;
+            top: 0;
+            width: 100px;
+            cursor: pointer;
+        }
+
+    </style>
+    <script type="text/javascript">
+        function getRadioValue(name) {
+            var radios = document.getElementsByName(name);
+            var value;
+            for (var i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    value = radios[i].value;
+                    break;
+                }
+            }
+            return value;
+        }
+        // 去除空格
+        function trim(str) { //删除左右两端的空格
+            return str.replace(/(^\s*)|(\s*$)/g, "");
+        }
+
+        function check() {
+            var id = document.getElementById("SSID");
+            var pwd = document.getElementById("KEY");
+
+            //alert(id.value + ' ' + pwd.value);
+            if (trim(id.value) == null || trim(id.value) == "") {
+                alert("请输入账号！");
+                return false;
+            }
+
+            if (trim(pwd.value) == null || trim(pwd.value) == "") {
+                alert("请输入密码！");
+                return false;
+            }
+            return true;
+        }
+
+        function saveConfig() {
+            if (check()) {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                var data;
+                data = "__SL_P_SID=";
+                data += document.getElementById("SSID").value;
+                data += "&";
+                data += "__SL_P_TYP=";
+                data += getRadioValue("TYPE");
+                data += "&";
+                data += "__SL_P_KEY=";
+                data += document.getElementById("KEY").value;
+
+                xmlhttp.open("POST", "No_content", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.setRequestHeader("Content-length", data.length);
+                xmlhttp.setRequestHeader("Connection", "close");
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    }
+                };
+                xmlhttp.send(data);
+
+                alert("配置信息已发送至设备！");
+            }
+        }
+    </script>
+</head>
+
+<body class="in-frame">
+<table border="0" width="100%" cellpadding="3" cellspacing="0">
+    <tr>
+        <td class="page-title" colspan=2>
+            WiFi配置
+        </td>
+    </tr>
+
+    <tr>
+        <td class="empty-l-in-box" colspan=2></td>
+    </tr>
+
+    <tr>
+        <td class="label" dir=LTR> WiFi账号:</td>
+        <td class="user-input">
+            <input type="text" maxlength="64" name="SSID" id="SSID"/> <span style="color: red;">* 账号长度不得超过32个字符</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="label"> 安全类型:</td>
+        <td class="user-input">
+            <input type="radio" name="TYPE" value="0"/>Open
+            <input type="radio" name="TYPE" value="1"/>WEP
+            <input type="radio" name="TYPE" value="2"/>WPA
+            <input type="radio" name="TYPE" value="3" checked="checked"/>WPA2
+    </tr>
+    <tr>
+        <td class="label"> WiFi密码:</td>
+        <td class="user-input">
+            <input type="text" maxlength="64" name="KEY" id="KEY"/> <span style="color: red;">* 密码长度不得超过50个字符</span>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="empty-l-in-box" colspan=2></td>
+    </tr>
+
+    <tr>
+        <td class="in-a-box" colspan=2 align=center>
+            <div class="submit">
+                <button class="weui-btn weui-btn_primary" id="saveConfig" onclick="saveConfig();">保存配置</button>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="in-a-box" colspan=2 align=center><span
+                style="font-size: 40%;">点击"保存配置"按钮后，设备便会进入STATION模式，无需重启设备</span></td>
+    </tr>
+
+    <tr>
+        <td class="empty-l-in-box" colspan=2></td>
+    </tr>
+
+    <tr>
+        <td class="border-l-top" colspan=2>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
