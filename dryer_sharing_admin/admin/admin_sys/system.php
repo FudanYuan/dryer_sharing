@@ -12,7 +12,6 @@ if (!isset($_SESSION['system'])) {
 }
 $id = $_SESSION['system'];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
