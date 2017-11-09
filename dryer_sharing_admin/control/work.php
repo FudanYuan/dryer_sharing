@@ -22,13 +22,13 @@ $ret = [];
 // 如果该机器不存在，则添加至数据库
 if ($mac_addr != null && $result == null) {
     // 生成二维码
-    $url0 = $_SERVER['HTTP_HOST'] . '/drying/wxpay/main/pay.php?id=' . $mac_addr;
+    $url0 = $_SERVER['HTTP_HOST'] . '/wxpay/main/pay.php?id=' . $mac_addr;
     $url = urldecode($url0);
     ob_start();
     QRcode::png($url);
     $pngData = ob_get_clean();
     file_put_contents('./img/' . $mac_addr . '.png', $pngData);
-    $QR_url = $_SERVER['HTTP_HOST'] . '/drying/control/img/' . $mac_addr . '.png';
+    $QR_url = $_SERVER['HTTP_HOST'] . '/control/img/' . $mac_addr . '.png';
     // 添加信息
     $sql = "insert into device_info(mac_addr, balance, QR_code, status, allo_status) values('{$mac_addr}', 0, '{$QR_url}', 0, 0)";
     $adminDB->ExecSQL($sql, $conn);
