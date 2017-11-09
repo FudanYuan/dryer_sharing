@@ -1,1 +1,0 @@
-dryer_sharing.com/control/work_update.php?mac_addr=A81B6A7AFDF6&consume_id=0&balance=0&normal=1
