@@ -20,7 +20,7 @@ class dbInfo{
     const DBSTYLE = "mysql";
     const HOST = "localhost";
     const USER = "root";
-    const PWD = "xxkj12345678";
-    //const PWD = "";
+    //const PWD = "xxkj12345678";
+    const PWD = "";
     const DBNAME = "dryer_sharing";
 }
