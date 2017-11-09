@@ -28,7 +28,7 @@ if ($mac_addr != null && $result == null) {
     QRcode::png($url);
     $pngData = ob_get_clean();
     file_put_contents('./img/' . $mac_addr . '.png', $pngData);
-    $QR_url = $_SERVER['HTTP_HOST'] . '/control/img/' . $mac_addr . '.png';
+    $QR_url = 'http://' . $_SERVER['HTTP_HOST'] . '/control/img/' . $mac_addr . '.png';
     // 添加信息
     $sql = "insert into device_info(mac_addr, balance, QR_code, status, allo_status) values('{$mac_addr}', 0, '{$QR_url}', 0, 0)";
     $adminDB->ExecSQL($sql, $conn);

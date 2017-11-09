@@ -1,1 +1,1 @@
-localhost/myProject/dryer_sharing/control/work.php?mac_addr=E0E5CFC462F4&user_id=o8SW9twYaLkzKvAgSQMNO4eWALJc&balance=20&normal=0&consume_t=1504873670
+dryer_sharing.com/control/work_update.php?mac_addr=A81B6A7AFDF6&consume_id=0&balance=0&normal=1
