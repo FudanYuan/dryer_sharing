@@ -28,7 +28,7 @@ $id = $_SESSION['system'];
 
 <!--标题-->
 <div class="logo">
-    <img src="../../logo/IMG_2748.JPG" style="height: 50px; width: 100px;"><span>讯鑫干衣科技</span>
+    <img src="../../logo/logo.JPG" style="height: 50px; width: 100px;"><span>讯鑫干衣科技</span>
     <span id="welcome">您好，<?php echo $id;?></span>
     <a id="logout" href="../login.html">注销登录</a>
     <hr/>
