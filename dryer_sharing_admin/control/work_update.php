@@ -18,12 +18,7 @@ $sql = "select dev_id, mac_addr from device_info where mac_addr = '{$mac_addr}'"
 $result = $adminDB->ExecSQL($sql, $conn);
 
 $ret = [];
-if(!strpos($_SERVER['HTTP_HOST'],'http://')){
-    $_SERVER['HTTP_HOST'] = 'http://' . $_SERVER['HTTP_HOST'];
-}
-$QR_url = $_SERVER['HTTP_HOST'] . '/control/img/' . $mac_addr . '.png';
-// 添加信息
-echo $QR_url;
+
 // 如果该机器不存在，则添加至数据库
 if ($mac_addr != null && $result == null) {
     // 生成二维码

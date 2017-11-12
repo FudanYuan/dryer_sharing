@@ -37,8 +37,8 @@ class WxPayConfig
 	// const SSLCERT_PATH = '../cert/apiclient_cert.pem';
 	// const SSLKEY_PATH = '../cert/apiclient_key.pem';
 
-    const SSLCERT_PATH = '/opt/lampp/htdocs/dryer_sharing/cert/apiclient_cert.pem';
-    const SSLKEY_PATH = '/opt/lampp/htdocs/dryer_sharing/cert/apiclient_key.pem';
+    const SSLCERT_PATH = 'http://dexinle.cn/wxpay/cert/apiclient_cert.pem';
+    const SSLKEY_PATH = 'http://dexinle.cn/wxpay/cert/apiclient_key.pem';
 
 	//=======【curl代理设置】===================================
 	/**
